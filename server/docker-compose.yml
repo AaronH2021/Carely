@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: carely-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      # Override DEBUG for development
+      - DEBUG=True
+    volumes:
+      # Mount source code for hot-reload during development
+      - ./app:/app/app
+      - ./alembic:/app/alembic
+      - ./alembic.ini:/app/alembic.ini
+    restart: unless-stopped
+
+  # Note: Using Neon serverless Postgres (no local database needed)
+  # DATABASE_URL is loaded from .env file
+  # Make sure .env contains your Neon pooled connection string:
+  # DATABASE_URL=postgresql://username:password@ep-xxxxx-pooler.region.aws.neon.tech/carely?sslmode=require
+
+
+
+
